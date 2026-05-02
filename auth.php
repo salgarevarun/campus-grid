@@ -23,18 +23,30 @@ if (isset($_POST['register'])) {
     if ($password !== $confirm_password) {
         $error = "Passwords do not match!";
     } else {
-        $check = $conn->prepare("SELECT id FROM users WHERE email = ?");
-        $check->bind_param("s", $email);
+        // 1. Check for BOTH email and username
+        $check = $conn->prepare("SELECT email, username FROM users WHERE email = ? OR username = ?");
+        $check->bind_param("ss", $email, $username);
         $check->execute();
-        if ($check->get_result()->num_rows > 0) {
-            $error = "Email already taken!";
+        $result = $check->get_result();
+
+        // 2. Identify exactly which one is a duplicate
+        if ($result->num_rows > 0) {
+            $existing_user = $result->fetch_assoc();
+            if ($existing_user['email'] === $email) {
+                $error = "An account with this email already exists!";
+            } else if ($existing_user['username'] === $username) {
+                $error = "That username is already taken! Please choose another.";
+            }
         } else {
+            // 3. No duplicates found! Safe to create the account.
             $hashed = password_hash($password, PASSWORD_DEFAULT);
             $stmt = $conn->prepare("INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, 'user')");
             $stmt->bind_param("sss", $username, $email, $hashed);
             if ($stmt->execute()) {
                 $success = "Account created! Please Sign In.";
                 $active_panel = ""; // Switch back to Login side
+            } else {
+                $error = "Database error: Could not create account.";
             }
         }
     }
