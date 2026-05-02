@@ -1,5 +1,7 @@
 # Campus Grid: The Central Nervous System of Student Life
 
+🔗 **[Click Here to View the Live Demo](https://campus-grid.kesug.com/?i=2)** 🔗
+
 **Campus Grid** is a premium, web-based campus utility platform designed to digitalize the college experience. It replaces outdated physical notice boards and fragmented WhatsApp groups with a centralized, searchable, and interactive digital ecosystem.
 
 Built by students for students, this platform streamlines information accessibility, resource sharing, and item recovery.
