@@ -1,0 +1,3580 @@
+/* 1. THEME VARIABLES (Updated: "True Zinc" Palette)
+*/
+:root {
+
+    /* 1. Backgrounds */
+    /* Softer, more professional pink that won't strain eyes */
+    --bg-body: #FFF1F2;
+
+    /* High-contrast white surfaces */
+    --nav-bg: rgba(255, 255, 255, 0.9);
+    --card-bg: #FFFFFF;
+    --search-bg: #F8F4F4;
+
+    /* 2. Text Colors */
+    --text-main: #472D2D;
+    /* Warm Cocoa for better readability */
+    --text-muted: #8E7070;
+
+    /* 3. Accents & Primary */
+    --primary: #A55166;
+    /* Vibrant Blossom Pink */
+    --primary-glow: rgba(255, 183, 197, 0.2);
+    --accent-mint: #D5F3D8;
+    /* The Mint Green from your palette */
+
+    /* 4. Borders & Grid */
+    --border-color: #EAD5D5;
+
+    /* Make the grid subtle and soft */
+    --grid-color: rgba(255, 183, 197, 0.15);
+}
+
+body.dark-mode {
+    /* --- DARK THEME (Deep "Midnight" Slate) --- */
+
+    /* Brand Color: Lighter to pop against dark */
+    --primary: #818CF8;
+    --primary-glow: rgba(129, 140, 248, 0.15);
+
+    /* Backgrounds */
+    --bg-body: #0B1120;
+    /* Very Dark Navy (Almost Black) */
+    --nav-bg: rgba(15, 23, 42, 0.8);
+    --card-bg: #1E293B;
+    /* Dark Blue-Gray Surface */
+    --search-bg: #0F172A;
+
+    /* Text */
+    --text-main: #F9FAFB;
+    /* White-ish */
+    --text-muted: #94A3B8;
+    /* Blue-Gray text */
+
+    /* Borders */
+    --border-color: #334155;
+    /* Dark Gray lines */
+
+    --grid-color: rgba(255, 255, 255, 0.03);
+}
+
+
+
+/* 4. Make fonts slightly more compact to fit */
+.cta-content h2 {
+    font-size: 1.8rem !important;
+    /* Smaller headline */
+    margin-bottom: 5px !important;
+}
+
+.footer-col h4 {
+    margin-bottom: 15px !important;
+}
+
+.footer-logo {
+    margin-bottom: 10px !important;
+}
+
+.footer-bio {
+    margin-bottom: 15px !important;
+    font-size: 0.85rem !important;
+}
+
+/* 5. Footer Bottom (Copyright) */
+.footer-copyright {
+    padding: 20px 0 !important;
+    margin-top: 0 !important;
+}
+
+/* 
+   2. GLOBAL RESET
+ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg-body);
+    color: var(--text-main);
+    transition: background 0.3s ease, color 0.3s ease;
+    font-family: sans-serif;
+    overflow-x: hidden;
+
+
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Forces body to be full screen height */
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+/* This pushes the footer down if content is short */
+footer {
+    margin-top: auto !important;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--primary);
+}
+
+/* 
+   3. HYBRID NAVBAR (Center Icons + Menu Button)
+ */
+.main-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+body.dark-mode .main-nav {
+    background: rgba(30, 41, 59, 0.95);
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    height: 70px;
+}
+
+/* Brand Logo */
+.brand {
+    font-weight: 800;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Center Icon Bar */
+.menu {
+    display: flex;
+    align-items: center;
+    background: var(--bg-body);
+    border: 1px solid var(--border-color);
+    padding: 4px;
+    border-radius: 14px;
+    gap: 4px;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 10px;
+    border-radius: 10px;
+    color: var(--text-muted);
+}
+
+.link .material-icons {
+    font-size: 22px;
+}
+
+.link-title {
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+
+/* Hover/Active Effects */
+.link:hover,
+.link.active {
+    background: var(--primary-glow);
+    color: var(--primary);
+}
+
+.link:hover .link-title,
+.link.active .link-title {
+    max-width: 100px;
+    opacity: 1;
+    margin-left: 8px;
+}
+
+.link:hover .material-icons,
+.link.active .material-icons {
+    color: var(--primary);
+}
+
+/*
+   4: SEARCH BAR (Zero-Shift Expansion)
+*/
+
+/* 1. The Anchor (Ghost Wrapper) */
+.search-wrapper {
+    position: relative;
+    width: 40px;
+    /* Always stays this wide */
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* Anchors content to the right */
+    z-index: 100;
+    /* Ensures search floats above center menu */
+}
+
+/* 2. The Floating Bar */
+.search-box-unified {
+    position: absolute;
+    /* Takes it out of the layout flow */
+    right: 0;
+    /* Anchors it to the "Post" button side */
+    top: 0;
+
+    width: 40px;
+    /* Start small */
+    height: 40px;
+    background: transparent;
+    border-radius: 50px;
+    border: 1px solid transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s;
+    overflow: hidden;
+    background: var(--bg-body);
+    /* Covers content behind it */
+}
+
+/* 3. Expansion State */
+.search-box-unified:focus-within,
+.search-box-unified.search-active {
+    width: 280px;
+    /* Expands LEFTWARDS because of right:0 */
+    background: var(--card-bg);
+    border: 1px solid var(--primary);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Input Styling */
+.search-box-unified input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+    padding: 0 45px 0 20px;
+    /* Padding for text vs icon */
+    color: var(--text-main);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.search-box-unified:focus-within input,
+.search-box-unified.search-active input {
+    opacity: 1;
+    cursor: text;
+}
+
+/* Button/Icon Styling */
+.search-box-unified button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    pointer-events: none;
+    /* Let clicks pass to input initially */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-box-unified:focus-within button,
+.search-box-unified.search-active button {
+    color: var(--primary);
+    pointer-events: auto;
+    /* Enable clicking when open */
+}
+
+/* Autofill Fix */
+.search-box-unified input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px var(--card-bg) inset !important;
+    -webkit-text-fill-color: var(--text-main) !important;
+}
+
+/*
+   5. NEW ANIMATED HAMBURGER (Fixed)
+*/
+.hamburger {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* 🔴 CRITICAL FIXES FOR "UNCLICKABLE" BUTTONS: */
+    position: relative;
+    /* z-index won't work without this! */
+    z-index: 10001;
+    /* Higher than everything */
+    pointer-events: auto;
+    /* Force clicks to register */
+
+    user-select: none;
+    margin-left: 10px;
+    background: transparent;
+    /* Ensure no background blocks it */
+    border: none;
+    /* Remove any default button borders */
+}
+
+.hamburger input {
+    display: none;
+}
+
+/* The Icon Size */
+.hamburger svg {
+    height: 48px;
+    width: 48px;
+    transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* The Lines */
+.line {
+    fill: none;
+    stroke: var(--text-main);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2.5;
+    transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1), stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.line-top-bottom {
+    stroke-dasharray: 12 63;
+}
+
+/* Animation State */
+.hamburger input:checked+svg {
+    transform: rotate(-45deg);
+}
+
+.hamburger input:checked+svg .line-top-bottom {
+    stroke-dasharray: 20 300;
+    stroke-dashoffset: -32.42;
+}
+
+/* --- ANIMATION STATES --- */
+/* When checkbox is checked (Menu Open), rotate and morph */
+.hamburger input:checked+svg {
+    transform: rotate(-45deg);
+}
+
+.hamburger input:checked+svg .line-top-bottom {
+    stroke-dasharray: 20 300;
+    stroke-dashoffset: -32.42;
+}
+
+/* =========================================
+   6. CURTAIN MENU (Restored Structure)
+   ========================================= */
+.curtain-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-body) !important;
+    z-index: 9998;
+
+    /* Animation Basics */
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+
+    /* Center everything */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.curtain-menu.active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* THE CONTAINER */
+.curtain-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    /* Brings the two sides closer */
+    width: auto;
+    /* Fits content snuggly */
+}
+
+/* LEFT SIDE (The Div) */
+.curtain-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: right;
+    /* Text hugs the line */
+    align-items: flex-end;
+    /* Flex items hug the line */
+}
+
+/* RIGHT SIDE (The Theme Link directly) */
+#dark-mode-toggle {
+    /* Create the Vertical Line here */
+    border-left: 1px solid var(--border-color);
+    padding-left: 60px;
+    /* Matches the gap */
+    height: 180px;
+    /* Force the line to be tall enough */
+
+    /* Center the text vertically next to the line */
+    display: flex;
+    align-items: center;
+}
+
+/* LINK STYLING */
+.curtain-link {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-main);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.curtain-link:hover {
+    opacity: 1;
+    color: var(--primary);
+    transform: translateX(10px);
+}
+
+
+.curtain-link span {
+    font-size: 0.8em;
+    /* Scale icon nicely */
+    opacity: 0;
+    /* Make it invisible */
+    transform: translateX(-20px);
+    /* Push it to the left */
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+
+.curtain-link:hover span {
+    opacity: 1;
+    /* Make visible */
+    transform: translateX(0);
+    /* Slide into place */
+    color: var(--primary);
+}
+
+.curtain-link:hover {
+    transform: translateX(10px);
+}
+
+
+
+
+.masonry-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+}
+
+/* Card Design */
+.card {
+    width: 100%;
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    overflow: hidden;
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 20px;
+    z-index: 10;
+}
+
+
+.badge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/*
+   8. CODE & VS CODE WINDOWS
+*/
+.code-window {
+    width: 100%;
+    background: #1e1e1e;
+    border-bottom: 1px solid var(--border-color);
+    font-family: 'Consolas', monospace;
+}
+
+.code-header {
+    background: #252526;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.window-controls {
+    display: flex;
+    gap: 6px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.red {
+    background: #ff5f56;
+}
+
+.yellow {
+    background: #ffbd2e;
+}
+
+.green {
+    background: #27c93f;
+}
+
+.code-lang {
+    color: #9cdcfe;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.code-body {
+    padding: 15px;
+    color: #d4d4d4;
+    font-size: 0.8rem;
+    white-space: pre-wrap;
+    overflow-x: auto;
+}
+
+/* =========================================
+   9. HOLOGRAPHIC MODAL (Popup)
+   ========================================= */
+
+/* The Background Overlay */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Darker, blurred backdrop to focus attention */
+    background: rgba(5, 10, 20, 0.85);
+    backdrop-filter: blur(8px);
+    /* Blurs the homepage behind it */
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* When Active (Added via JS) */
+.modal-overlay.active {
+    opacity: 1;
+}
+
+/* The Glass Box Itself */
+.modal-content {
+    /* Glass Effect */
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    /* Border Glow */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+    width: 100%;
+    max-width: 1100px;
+    max-height: 90vh;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+
+    /* Animation Start State */
+    transform: scale(0.9) translateY(20px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Bouncy "Pop" effect */
+}
+
+/* When Active */
+.modal-overlay.active .modal-content {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+/* Left Side (Image/Code) */
+.modal-left {
+    flex: 2;
+    background: rgba(0, 0, 0, 0.3);
+    /* Darker tint for contrast */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Right Side (Text) */
+.modal-right {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    /* Text color for readability on glass */
+    color: #e2e8f0;
+}
+
+/* Close Button (Floating Orb) */
+.modal-close {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.modal-close:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    transform: rotate(90deg);
+}
+
+
+
+/* =========================================
+   10. FORMS (Restored Premium Dark Theme)
+   ========================================= */
+
+
+
+.auth-card {
+    background-color: #1f1f1f;
+    padding: 35px;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 24px;
+    border: 1px solid #333;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.auth-header h2 {
+    color: white;
+    margin: 0 0 5px 0;
+    font-size: 1.8rem;
+}
+
+.auth-header p {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* LABELS */
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    color: #f1f1f1;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    margin-left: 4px;
+    /* Slight alignment fix */
+}
+
+/* INPUT BOX (The Fix) */
+.inputForm {
+    background-color: #2b2b2b;
+    /* Your original input color */
+    border: 1.5px solid #333;
+    border-radius: 12px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    /* This FIXES the sticking up icon */
+    padding: 0 15px;
+    transition: 0.2s ease-in-out;
+    position: relative;
+    /* Safety for positioning */
+}
+
+/* THE ICON ITSELF */
+.inputForm .material-icons {
+    color: #666;
+    font-size: 20px;
+    display: flex;
+    /* Ensures icon centers itself */
+    align-items: center;
+    justify-content: center;
+}
+
+/* THE INPUT TEXT (Transparent background) */
+.input {
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    height: 100%;
+    color: #f1f1f1;
+    outline: none;
+    margin-left: 12px;
+    /* Gap between icon and text */
+    font-size: 0.95rem;
+}
+
+/* 🛑 THE BROWN BOX KILLER (Autofill Fix) */
+/* This forces browser to paint the background #2b2b2b instead of white/yellow */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #2b2b2b inset !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Focus State */
+.inputForm:focus-within {
+    border: 1.5px solid var(--primary);
+}
+
+.inputForm:focus-within .material-icons {
+    color: var(--primary);
+}
+
+/* Buttons */
+.button-submit {
+    background-color: var(--primary);
+    /* Uses your Purple/Pink */
+    border: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 12px;
+    height: 52px;
+    width: 100%;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.button-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Extras */
+.flex-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+    font-size: 13px;
+    color: #aaa;
+}
+
+.span {
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.p {
+    text-align: center;
+    color: #aaa;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Fix: Brighter labels for Dark Mode */
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-main);
+    opacity: 0.9;
+}
+
+/* 🛑 THE INPUT FIX: High Contrast & Visibility */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select,
+.file-input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-body);
+    /* Switches with theme */
+    color: var(--text-main) !important;
+    /* Force visible text */
+    outline: none;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+/* 🔵 BUTTONS: Professional Glow */
+.btn-login,
+.btn-save,
+.btn-contact,
+.btn-post-grid {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: white !important;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px var(--primary-glow);
+}
+
+.btn-login-ghost {
+    padding: 8px 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+    transition: all 0.3s ease;
+}
+
+.btn-login-ghost:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white !important;
+}
+
+/* Settings Specifics */
+.input-readonly {
+    background: var(--search-bg);
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.icon-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.icon-input .material-icons {
+    position: absolute;
+    left: 15px;
+    color: var(--text-muted);
+}
+
+.icon-input input {
+    padding-left: 48px;
+}
+
+/* 💎 RADIO CARDS: Interactive Selection */
+.radio-group {
+    display: flex;
+    gap: 15px;
+}
+
+.radio-label {
+    flex: 1;
+    cursor: pointer;
+}
+
+.radio-label input {
+    display: none;
+}
+
+.radio-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: var(--card-bg);
+    transition: var(--transition);
+}
+
+.radio-label input:checked+.radio-card {
+    background: var(--primary-glow);
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: scale(1.02);
+}
+
+/* Password Wrapper  */
+
+/* 1. Make the wrapper a reference point */
+.password-wrapper {
+    position: relative;
+    /* Essential for absolute positioning inside */
+    display: flex;
+    align-items: center;
+}
+
+
+
+/* 3. Make room for the icon so text doesn't hit it */
+.password-wrapper input[type="password"],
+.password-wrapper input[type="text"] {
+    padding-right: 50px !important;
+}
+
+
+
+/* 
+   12 NAVBAR ADDITIONS (Post Button & Dropdown)
+*/
+
+/* 1. The "Post" Button (Navbar) */
+.btn-create-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--text-main);
+    /* Black (or White in dark mode) */
+    color: var(--bg-body) !important;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
+
+.btn-create-nav:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    opacity: 0.9;
+}
+
+.btn-create-nav .material-icons {
+    font-size: 18px;
+}
+
+/* 2. User Profile Dropdown System */
+.user-dropdown {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.profile-trigger {
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    color: var(--text-muted);
+    transition: color 0.2s;
+}
+
+.profile-trigger:hover {
+    color: var(--primary);
+}
+
+/* The Dropdown Box */
+.dropdown-content {
+    position: absolute;
+    top: 50px;
+    /* Below the navbar */
+    right: 0;
+    width: 200px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.2);
+    padding: 8px 0;
+
+    /* Hidden State */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.2s ease;
+    z-index: 10001;
+    /* Above everything */
+}
+
+/* Show on Hover */
+.user-dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Invisible bridge so mouse doesn't lose focus */
+.user-dropdown::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 20px;
+}
+
+/* Dropdown Links */
+.dropdown-content a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    color: var(--text-main);
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.dropdown-content a:hover {
+    background: var(--search-bg);
+    color: var(--primary);
+}
+
+.dropdown-content .material-icons {
+    font-size: 20px;
+    color: var(--text-muted);
+}
+
+.dropdown-header {
+    padding: 10px 20px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 5px;
+}
+
+
+/* --- Lenis Smooth Scroll Compatibility --- */
+html.lenis {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+/*
+  13. MODERN FOOTER REDESIGN
+*/
+
+.site-footer-modern {
+    /* 1. Force Full Width (Fixes the 96% shrinking issue) */
+    width: 100% !important;
+    max-width: 100% !important;
+
+    /* 2. Sticky Bottom Logic */
+    margin-top: auto !important;
+    margin-bottom: 0 !important;
+
+    /* 3. Visual Styling */
+    background: var(--nav-bg);
+    border-top: 1px solid var(--border-color);
+    padding: 0 20px !important;
+
+    /* 4. Center the Inner Content */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-cta-section,
+.footer-grid-container,
+.footer-copyright {
+    width: 92% !important;
+    max-width: 1400px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.footer-cta-section {
+    padding: 50px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    /* Grouping border */
+}
+
+.footer-grid-container {
+    padding: 40px 0;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 40px;
+}
+
+
+.cta-content h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--text-main);
+    margin-bottom: 10px;
+}
+
+.cta-content p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+.btn-footer-primary {
+    padding: 15px 35px;
+    background: var(--text-main);
+    /* Inverted look */
+    color: var(--bg-body) !important;
+    font-weight: 700;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-footer-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.footer-divider {
+    height: 1px;
+    background: var(--border-color);
+    max-width: 1200px;
+    margin: 0 auto;
+    opacity: 0.5;
+}
+
+
+/* Column Styling */
+.footer-col h4 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+.footer-logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    color: var(--text-main);
+}
+
+.footer-bio {
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    max-width: 300px;
+}
+
+.footer-socials {
+    display: flex;
+    gap: 20px;
+}
+
+.social-link {
+    font-weight: 600;
+    font-size: 0.9rem;
+    position: relative;
+}
+
+.social-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--primary);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.social-link:hover::after {
+    transform: scaleX(1);
+}
+
+/* Nav Lists */
+.footer-nav {
+    list-style: none;
+}
+
+.footer-nav li {
+    margin-bottom: 15px;
+}
+
+.footer-nav a {
+    color: var(--text-main);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.footer-nav a:hover {
+    color: var(--primary);
+}
+
+/* Newsletter Input */
+.footer-form {
+    display: flex;
+    gap: 10px;
+    position: relative;
+}
+
+.footer-form input {
+    background: var(--bg-body);
+    border: 1px solid var(--border-color);
+    padding: 12px 15px;
+    border-radius: 12px;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+.footer-form button {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    bottom: 5px;
+    background: var(--text-main);
+    color: var(--bg-body);
+    border: none;
+    border-radius: 8px;
+    width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.footer-form button:hover {
+    opacity: 0.8;
+}
+
+/* 3. Footer Bottom */
+.footer-copyright {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    padding: 30px 0 20px;
+
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.made-with {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+
+/* 14. HERO SECTION (Refined) */
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 20px;
+    /* Added top padding for header clearance */
+    background: var(--bg-body);
+    overflow: hidden;
+}
+
+/* 🎨 The Cool Grid Background Effect */
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    opacity: 1;
+
+    /* 1. Base Gradient: Subtle radial fade so center is clear */
+    background: radial-gradient(circle at center, transparent 0%, var(--bg-body) 90%);
+
+    /* 2. The Grid: Uses your primary glow color for the lines */
+    background-image:
+        linear-gradient(var(--primary-glow) 1px, transparent 1px),
+        linear-gradient(90deg, var(--primary-glow) 1px, transparent 1px);
+
+    background-size: 50px 50px;
+    /* Slightly larger, cleaner grid */
+
+    /* 3. Mask: Fades out the bottom so it doesn't cut off harshly */
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Typography */
+.hero-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: var(--primary-glow);
+    color: var(--primary);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    border: 1px solid var(--primary);
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 8vw, 3.5rem);
+    /* Responsive sizing without extra media queries */
+    font-weight: 800;
+    line-height: 1.2;
+    /* Slightly more breathing room for the gradient clip */
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--text-main) 30%, var(--text-muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+    /* Tighter tracking for that premium "Inter" font look */
+    padding-bottom: 5px;
+    /* Prevents descender clipping */
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* Buttons */
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+
+.btn-hero-primary {
+    padding: 12px 32px;
+    background: var(--primary);
+    color: white;
+    border: 2px solid var(--primary);
+    /* Keeps size consistent with secondary */
+    border-radius: 50px;
+    font-weight: 700;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-hero-secondary {
+    padding: 12px 32px;
+    background: transparent;
+    /* Let the grid show through slightly */
+    color: var(--text-main);
+    border: 2px solid var(--border-color);
+    /* The essential border */
+    border-radius: 50px;
+    font-weight: 700;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/* Hover States */
+.btn-hero-primary:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px var(--primary-glow);
+}
+
+.btn-hero-secondary:hover {
+    background: var(--search-bg);
+    border-color: var(--text-muted);
+    /* Darkens slightly on hover */
+    transform: translateY(-3px);
+}
+
+
+/* 15. FEATURES SECTION (Elevated Card Fix)
+*/
+.features-section {
+    padding: 80px 0 !important;
+    background: var(--bg-body);
+}
+
+.feature-card {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px -5px rgba(71, 45, 45, 0.08) !important;
+    padding: 40px 30px !important;
+    min-height: 320px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+    flex: 1 1 300px !important;
+    max-width: 400px;
+    width: 100%;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.1) 0%,
+            transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+.feature-card .btn-primary {
+    margin-top: auto;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+
+
+
+/* Light Beam: Tuned for Light Theme */
+.feature-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(79, 70, 229, 0.05), transparent);
+    transform: rotate(45deg);
+    transition: 0.6s;
+    pointer-events: none;
+}
+
+.feature-card:hover::after {
+    left: 120%;
+    top: 120%;
+}
+
+.feature-icon {
+    margin-bottom: 25px !important;
+    padding: 15px;
+    background: var(--primary-glow);
+    /* Subtle circle behind icon */
+    border-radius: 12px;
+    color: var(--primary);
+}
+
+.feature-card,
+.post-card {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    /* This Rosy Shadow adds the 3D depth you're missing */
+    box-shadow: 0 10px 30px -5px rgba(71, 45, 45, 0.08) !important;
+}
+
+.feature-icon {
+    background: var(--accent-mint);
+    /* Uses the Mint Green for a pop of color */
+    color: #472D2D;
+    border-radius: 12px;
+}
+
+.feature-icon .material-icons {
+    font-size: 32px;
+}
+
+.feature-icon,
+.feature-title,
+.feature-desc {
+    transform: translateZ(20px);
+    /* Pushes text closer to the screen (3D pop) */
+}
+
+.feature-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    color: var(--text-main);
+}
+
+.feature-desc {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/*
+   16. GALLERY SECTION
+*/
+.gallery-section {
+    padding: 80px 20px;
+    text-align: center;
+    background: var(--bg-body);
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 40px;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.gallery-item {
+    position: relative;
+    height: 260px;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.4s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px) scale(1.02);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.3s;
+}
+
+/* Dark Overlay on Hover */
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    padding: 30px 15px 15px;
+    color: white;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* 3. Widen the Features Grid (3 Icons) */
+.features-grid {
+    display: grid;
+    /* Use 1fr for 3 columns, but let them stack on smaller screens */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+
+    /* Spacing & Sizing */
+    gap: 40px;
+    width: 92%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px 100px;
+}
+
+
+/* 4. Widen the Navbar Content */
+.nav-container {
+    max-width: 1500px !important;
+    padding: 0 40px !important;
+    /* More breathing room on edges */
+}
+
+/* 5. Widen the "Fresh on Grid" Showcase */
+section[style*="max-width: 1200px"] {
+    max-width: 1500px !important;
+    /* Forces the showcase wider */
+}
+
+/* 
+   15. ULTRA-WIDE MONITOR FIX (Full Screen)
+    */
+
+/* 1. Navbar: Stretch to edges */
+.nav-container {
+    max-width: 100% !important;
+    padding: 0 40px !important;
+}
+
+/* 2. Hero Section: Keep text centered but let bg flow */
+.hero-content {
+    max-width: 1000px !important;
+    /* Keep text readable */
+    margin: 0 auto;
+}
+
+/* 3. Features Grid (The 3 big cards) */
+.features-grid {
+    width: 92% !important;
+    /* Takes up most of the screen */
+    max-width: 1400px !important;
+    /* STOPS expanding at 1400px (The Limit) */
+    margin: 0 auto !important;
+    /* Centers it perfectly */
+    gap: 30px !important;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) !important;
+}
+
+/* 6. Showcase Section (Fresh on Grid) */
+section[style*="max-width"] {
+    max-width: 100% !important;
+}
+
+section[style*="max-width"]>div {
+    max-width: 96% !important;
+    margin: 0 auto !important;
+}
+
+/* Prevent cards from getting TOO wide and looking weird */
+.feature-card,
+.card {
+    min-width: 0;
+    /* Prevents flexbox overflow */
+}
+
+
+
+/* 
+   18. FEED PAGE HEADER (The "View All" Page)
+    */
+
+
+/* The Title "All Posts" */
+h2[style*="font-size:1.8rem"] {
+    font-size: 2.5rem !important;
+    font-weight: 800 !important;
+    color: var(--text-main) !important;
+    text-align: center;
+    margin-bottom: 10px !important;
+    letter-spacing: -1px;
+}
+
+/* The "Back to Home" Link -> Turn it into a button */
+a[href="index.php"][style*="color:var(--primary)"] {
+    display: inline-block;
+    background: var(--card-bg);
+    /* Dark grey pill */
+    color: var(--text-muted) !important;
+    padding: 8px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem !important;
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+    margin-bottom: 40px;
+    /* Push the grid down */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    /* Center the button */
+}
+
+/* Hover effect for the Back button */
+a[href="index.php"][style*="color:var(--primary)"]:hover {
+    background: var(--primary);
+    color: white !important;
+    border-color: var(--primary);
+    box-shadow: 0 5px 15px var(--primary-glow);
+}
+
+/* 
+   20. MENU OVERLAY BRANDING FIX
+    */
+
+/* 1. The Container: Center and add spacing */
+.menu-right {
+    text-align: left !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 60px !important;
+    /* Push it away from the divider */
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    /* Subtle divider line */
+}
+
+/* 2. "Campus Grid" Title: Big, Bold & Gradient */
+.menu-brand h2 {
+    font-size: 3rem !important;
+    /* Massive text */
+    font-weight: 800 !important;
+    letter-spacing: -2px;
+    margin-bottom: 20px !important;
+    line-height: 1 !important;
+
+    /* The Signature Blue Gradient */
+    background: linear-gradient(135deg, #ffffff 0%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* 3. The Description: Readable & Classy */
+.menu-brand p {
+    font-size: 1.1rem !important;
+    color: var(--text-muted) !important;
+    line-height: 1.6 !important;
+    max-width: 350px !important;
+    /* Keep it compact */
+    font-weight: 400 !important;
+    opacity: 0.8;
+}
+
+/* 4. Add a subtle decorative element */
+.menu-brand::before {
+    content: "EST. 2026";
+    display: block;
+    font-size: 0.8rem;
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    opacity: 0.6;
+}
+
+
+
+/* 
+   22. CURTAIN MENU PREMIUM GLOW UP
+    */
+
+/* Center and align the brand section */
+.curtain-info {
+    text-align: left !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding-left: 60px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Add the 'EST. 2026' Badge */
+.curtain-info::before {
+    content: "EST. 2026";
+    display: block;
+    font-size: 0.8rem;
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    opacity: 0.8;
+}
+
+/* The massive gradient Title */
+.curtain-info h3 {
+    font-size: 3.5rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -2px;
+    margin-bottom: 15px !important;
+    line-height: 1 !important;
+    background: linear-gradient(135deg, #ffffff 0%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* The description text */
+.curtain-info p {
+    font-size: 1.1rem !important;
+    color: var(--text-muted) !important;
+    line-height: 1.6 !important;
+    max-width: 320px !important;
+    font-weight: 400 !important;
+}
+
+
+
+/* Ensure brand gradients are visible in Light Mode */
+body:not(.dark-mode) .curtain-info h3,
+body:not(.dark-mode) .footer-logo,
+body:not(.dark-mode) .menu-brand h2,
+body:not(.dark-mode) .hero-title {
+    background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+
+
+/* Soft shadows for Light Mode */
+body:not(.dark-mode) .card,
+body:not(.dark-mode) .feature-card {
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Make the hero grid visible but subtle */
+body:not(.dark-mode) .hero-bg {
+    opacity: 0.5 !important;
+    background-image:
+        linear-gradient(#e2e8f0 1px, transparent 1px),
+        linear-gradient(90deg, #e2e8f0 1px, transparent 1px) !important;
+}
+
+/* 
+   24. MINI FOOTER STYLES
+    */
+
+/* The slim version for secondary pages */
+.footer-mini {
+    background: transparent !important;
+    /* Removes the dark box */
+    border-top: none !important;
+    /* Removes the top line */
+    box-shadow: none !important;
+    padding: 20px 0 !important;
+    /* Reduces height */
+    margin-top: auto;
+    /* Pushes it to bottom */
+}
+
+.footer-mini .footer-copyright {
+    border-top: none !important;
+    padding: 20px 40px !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.footer-mini,
+.footer-mini a,
+.footer-mini span {
+    color: var(--text-muted) !important;
+    opacity: 0.8;
+}
+
+/* Light Mode Logo for Mini Footer */
+body:not(.dark-mode) .mini-logo {
+    background: linear-gradient(135deg, var(--primary) 0%, #4338ca 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.mini-logo span {
+    -webkit-text-fill-color: var(--primary) !important;
+}
+
+/* 1. Gentle Floating Animation for Hero */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.hero-section h1 {
+    animation: float 5s ease-in-out infinite;
+}
+
+/* 2. Entrance Stagger for buttons */
+.hero-section .btn {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.hero-section .btn:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Unified Container Logic for Section 14, 15, and 16 */
+.nav-container,
+.footer-grid-container,
+.features-grid {
+    width: 92% !important;
+    max-width: 1440px !important;
+    /* The professional 'Golden Ratio' */
+    margin: 0 auto !important;
+    padding: 0 20px;
+}
+
+/* 
+   CLEAN GRID LOADER (The Correct One)
+   */
+.loader-wrapper {
+    position: fixed;
+    inset: 0;
+
+    /* The Clean Grid Background */
+    background-color: var(--bg-body);
+    background-image:
+        linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+
+    z-index: 10005 !important;
+    /* Forces it on top */
+    transition: none !important;
+
+    display: none;
+    /* Hidden by default */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+/* Only show when body has 'loading' class */
+body.loading #loader-wrapper {
+    display: flex;
+}
+
+/* The "Campus Grid" Text */
+.loader-logo {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    white-space: nowrap;
+}
+
+/* The Pink Loading Line */
+.loader-line {
+    width: 0;
+    /* JS will animate this */
+    height: 4px;
+    background: var(--primary);
+    margin-top: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px var(--primary-glow);
+}
+
+
+
+/* 
+   SCROLL REVEAL ANIMATIONS
+    */
+
+/* Pre-animation state */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Active state triggered by JS */
+.reveal-on-scroll.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered delays for grids */
+.delay-1 {
+    transition-delay: 0.1s;
+}
+
+.delay-2 {
+    transition-delay: 0.2s;
+}
+
+.delay-3 {
+    transition-delay: 0.3s;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    opacity: 0.7;
+    color: var(--text-muted);
+}
+
+.scroll-indicator .material-icons {
+    font-size: 2rem;
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    40% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+
+    60% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+/* 
+   UPLOAD PAGE FIXES
+    */
+
+/* 1. Fix the Form Spacing (The Gap) */
+.upload-mode form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px !important;
+    /* Forces space between every input */
+}
+
+/* 2. Fix the Card Width to match Login/Signup */
+.upload-mode {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* 3. Ensure the Dropdown (Select) looks like other inputs */
+.upload-mode select {
+    appearance: none;
+    /* Removes default browser arrow */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23888888%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
+}
+
+/* 
+   LIGHT THEME GRID FIX
+    */
+
+/* Only applies when NOT in dark mode */
+body:not(.dark-mode) .hero-bg {
+    /* 1. Remove the transparency that was hiding it */
+    opacity: 1 !important;
+
+    /* 2. Make the lines a soft, visible color (Cocoa/Pink mix) instead of white */
+    background-image:
+        linear-gradient(rgba(165, 81, 102, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(165, 81, 102, 0.15) 1px, transparent 1px) !important;
+
+    /* 3. Keep the fade-out effect at the bottom */
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+}
+
+/* 
+   SLIDING GLASS AUTH (New Login/Signup)
+    */
+
+/* The Glass Container */
+/* The Glass Container */
+.glass-container {
+    /* 1. Glass Transparency (Dark Tint for better contrast) */
+    background: rgba(0, 0, 0, 0.2);
+
+    /* 2. LOWER BLUR so you can see the particles behind it! */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    /* 3. Borders */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+
+    position: relative;
+    overflow: hidden;
+    width: 900px;
+    max-width: 100%;
+    min-height: 600px;
+    z-index: 10;
+    /* Ensures it sits above the canvas */
+}
+
+/* Form Positioning */
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+/* Sign In (Default Left) */
+.sign-in-container {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+/* Sign Up (Hidden Right initially) */
+.sign-up-container {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+/* Active State: Move Sign Up to Front */
+.glass-container.right-panel-active .sign-in-container {
+    transform: translateX(100%);
+    opacity: 0;
+    /* <--- This is the magic fix */
+    z-index: 0;
+    pointer-events: none;
+    /* Prevents clicking the hidden form */
+}
+
+.glass-container.right-panel-active .sign-up-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: show 0.6s;
+}
+
+@keyframes show {
+
+    0%,
+    49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+/* THE OVERLAY (The Moving Gradient Part) */
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.glass-container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+}
+
+.overlay {
+    /* DESIGNER CHOICE: Deep Purple to Vibrant Teal */
+    /* This bridges the gap between your buttons and the new teal color */
+    background: linear-gradient(135deg, rgba(129, 140, 248, 0.9) 0%, rgba(14, 165, 164, 0.9) 100%);
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 0;
+    color: #FFFFFF;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.glass-container.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+
+/* Overlay Text Panels */
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+.glass-container.right-panel-active .overlay-left {
+    transform: translateX(0);
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.glass-container.right-panel-active .overlay-right {
+    transform: translateX(20%);
+}
+
+/* Ghost Button (Border Only) */
+.btn-ghost {
+    background: transparent;
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+    margin-top: 20px;
+    padding: 12px 35px;
+    border: 1px solid white;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Form Styling (Reuse your dark theme inputs) */
+
+/* 
+   NETWORK BACKGROUND SETUP
+    */
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    padding-top: 80px;
+    position: relative;
+    /* Critical for canvas positioning */
+    overflow: hidden;
+    /* Keeps the animation inside */
+
+    /* Deep Space Background Color */
+    background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+}
+
+/* The Canvas Element (The Animation Layer) */
+#network-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    /* Puts it BEHIND the glass form */
+    pointer-events: none;
+    /* Lets clicks pass through to the form */
+}
+
+/* Ensure the Glass Form sits ON TOP */
+.glass-container {
+    z-index: 10;
+}
+
+.auth-form {
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 50px;
+    height: 100%;
+    text-align: center;
+    gap: 15px;
+    /* Adds consistent space between all elements */
+}
+
+.auth-form .inputForm {
+    width: 100%;
+    /* Lighter, more see-through background for inputs */
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    position: relative;
+}
+
+.auth-form .input {
+    background: transparent;
+    border: none;
+    color: white;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    margin-left: 10px;
+}
+
+.toggle-icon {
+    position: absolute;
+    right: 15px;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    font-size: 20px;
+    transition: color 0.3s;
+}
+
+.toggle-icon:hover {
+    color: var(--primary);
+}
+
+
+/* Header Sign Up Button */
+.btn-signup-nav {
+    padding: 8px 18px;
+    background: var(--primary);
+    /* Filled color */
+    color: white !important;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    border: 1px solid var(--primary);
+}
+
+.btn-signup-nav:hover {
+    background: transparent;
+    color: var(--primary) !important;
+    box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+/* 
+   INTERACTIVE HERO GRID (Spotlight)
+    */
+#hero-grid-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    /* Behind the text */
+}
+
+/* Ensure text sits on top */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+    /* Let mouse pass through text to the grid */
+}
+
+/* Re-enable clicks for buttons & badges so they work */
+.hero-actions,
+.hero-badge,
+.scroll-indicator {
+    pointer-events: auto;
+}
+
+/* 
+   USER PROFILE PAGE (The Node Identity)
+    */
+
+.profile-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 120px 20px 40px;
+    /* Top padding for header */
+    display: flex;
+    gap: 40px;
+    min-height: 100vh;
+}
+
+/* LEFT SIDE: Identity Card */
+.profile-sidebar {
+    flex: 1;
+    max-width: 380px;
+}
+
+/* The Glass Card Style (Reusing your theme) */
+.glass-card {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+    border-radius: 24px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* AVATAR: Glowing Pulse Effect */
+.avatar-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(129, 140, 248, 0.5);
+    /* Purple ring */
+    box-shadow: 0 0 30px rgba(129, 140, 248, 0.3);
+    padding: 4px;
+    /* Gap between border and image */
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Online Dot */
+.online-indicator {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 15px;
+    height: 15px;
+    background: #10b981;
+    /* Green */
+    border: 2px solid #1e293b;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #10b981;
+}
+
+.profile-name {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.profile-role {
+    color: var(--primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+/* STATS GRID */
+.profile-stats {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.stat-box {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 15px 10px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-num {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: white;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+}
+
+.glass-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    margin: 20px 0;
+}
+
+/* Form Tweaks */
+.profile-form {
+    width: 100%;
+    text-align: left;
+}
+
+.file-input-sm {
+    padding: 8px !important;
+    font-size: 0.8rem;
+    margin-bottom: 15px;
+}
+
+.btn-sm {
+    height: 40px;
+    font-size: 0.9rem;
+    margin-top: 15px;
+}
+
+.success-badge {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* RIGHT SIDE: Activity Stream */
+.profile-content {
+    flex: 2;
+}
+
+.section-title {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+
+
+/* 
+   POSH UI UPGRADES
+*/
+
+
+
+/* 1. THE "POSH" POST BUTTON */
+.btn-posh {
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    /* Indigo to Purple */
+    color: white !important;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    /* Glowing Shadow */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Shine Effect on Hover */
+.btn-posh::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.btn-posh:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+}
+
+.btn-posh:hover::after {
+    left: 100%;
+}
+
+/* 2. CUSTOM FILE UPLOAD (Hides the ugly default input) */
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.custom-file-upload:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* 3. PREMIUM FEED CARD (For Profile) */
+.profile-feed-card {
+    background: rgba(30, 41, 59, 0.4) !important;
+    /* Slightly lighter than bg */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-feed-card:hover {
+    background: rgba(30, 41, 59, 0.6) !important;
+    border-color: rgba(129, 140, 248, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* Date Badge in Corner */
+.feed-date {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    opacity: 0.7;
+}
+
+/* 
+   ADMIN COMMAND CENTER (The Brain)
+    */
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+}
+
+/* 1. GLASS SIDEBAR */
+.admin-sidebar {
+    width: 260px;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 50px;
+    color: white;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    color: #94a3b8;
+    border-radius: 12px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.menu-item:hover,
+.menu-item.active {
+    background: rgba(129, 140, 248, 0.1);
+    color: var(--primary);
+}
+
+.menu-item.logout {
+    margin-top: auto;
+    color: #ef4444;
+}
+
+.menu-item.logout:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+/* Server Status at bottom of sidebar */
+.server-status {
+    margin-top: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #10b981;
+    margin-bottom: 5px;
+}
+
+.server-status span {
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.server-status small {
+    color: #64748b;
+    font-size: 0.65rem;
+}
+
+
+/* 2. MAIN CONTENT AREA */
+.admin-content {
+    flex: 1;
+    margin-left: 260px;
+    /* Offset for sidebar */
+    padding: 40px;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+/* 3. STAT CARDS */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 25px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-card h3 {
+    color: white;
+    font-size: 1.8rem;
+    margin-bottom: 2px;
+}
+
+.stat-card p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+/* 4. GLASS TABLE */
+.data-section {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 25px;
+    overflow: hidden;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    color: white;
+    font-size: 1.2rem;
+}
+
+.btn-xs {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.glass-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.glass-table th {
+    text-align: left;
+    color: #94a3b8;
+    font-size: 0.8rem;
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-table td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.9rem;
+}
+
+.glass-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.action-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.action-btn.delete {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.action-btn.delete:hover {
+    background: #ef4444;
+    color: white;
+}
+
+
+/* =========================================
+   UNIVERSAL MOBILE RESPONSIVENESS
+   (All screens 900px and smaller)
+   ========================================= */
+@media (max-width: 900px) {
+
+    /* --- 1. Navbar & Curtain Menu --- */
+    .menu {
+        display: none !important;
+    }
+
+    .mobile-only-links {
+        display: block !important;
+    }
+
+    .btn-create-nav {
+        display: none;
+    }
+
+    .curtain-content {
+        flex-direction: column;
+        gap: 40px;
+        align-items: flex-start;
+    }
+
+    .curtain-links {
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .curtain-link {
+        font-size: 2rem;
+    }
+
+    #dark-mode-toggle {
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+        padding-left: 0;
+        padding-top: 40px;
+        height: auto;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .curtain-info {
+        display: block !important;
+        padding-left: 0 !important;
+        border-left: none !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+        padding-top: 40px !important;
+        margin-top: 30px !important;
+        text-align: center !important;
+    }
+
+    .curtain-info h3 {
+        font-size: 2.5rem !important;
+    }
+
+    .menu-right {
+        padding-left: 0 !important;
+        border-left: none !important;
+        padding-top: 40px !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center !important;
+        align-items: center;
+    }
+
+    .menu-brand h2 {
+        font-size: 2.2rem !important;
+    }
+
+    /* --- 2. Hero Section --- */
+    .hero-title {
+        font-size: 2.5rem !important;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        padding: 0 40px;
+    }
+
+    .hero-section {
+        padding-top: 100px !important;
+    }
+
+    /* --- 3. Layouts (Features & Feed) --- */
+    .features-grid,
+    .features-container {
+        grid-template-columns: 1fr !important;
+        flex-direction: column !important;
+        align-items: center;
+        width: 90% !important;
+        gap: 20px !important;
+    }
+
+    .feature-card {
+        min-height: auto !important;
+        padding: 30px 20px !important;
+    }
+
+    .masonry-wrapper,
+    .post-grid {
+        grid-template-columns: 1fr !important;
+        flex-direction: column;
+    }
+
+    .masonry-column {
+        width: 100%;
+    }
+
+    /* --- 4. Modals --- */
+    .modal-content {
+        flex-direction: column;
+        max-height: 95vh;
+    }
+
+    .modal-left {
+        height: 40vh;
+        width: 100%;
+    }
+
+    .modal-right {
+        padding: 25px;
+    }
+
+    /* --- 5. Auth (Login/Signup) --- */
+    .glass-container {
+        min-height: auto;
+        padding-bottom: 30px;
+        height: auto;
+    }
+
+    .auth-form {
+        padding: 40px 20px;
+    }
+
+    .form-container {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: auto;
+        left: auto;
+        opacity: 1;
+    }
+
+    .sign-up-container {
+        display: none;
+    }
+
+    .glass-container.right-panel-active .sign-in-container {
+        display: none;
+    }
+
+    .glass-container.right-panel-active .sign-up-container {
+        display: flex;
+        transform: none;
+    }
+
+    .overlay-container {
+        display: none;
+    }
+
+    .mobile-toggle {
+        display: block;
+        margin-top: 20px;
+        color: var(--primary);
+        cursor: pointer;
+    }
+
+    /* --- 6. Admin & Profile --- */
+    .admin-sidebar {
+        display: none;
+    }
+
+    .admin-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .profile-container {
+        flex-direction: column;
+    }
+
+    .profile-sidebar {
+        max-width: 100%;
+    }
+
+    /* --- 7. Footer --- */
+    .footer-grid-container {
+        grid-template-columns: 1fr !important;
+        text-align: center;
+        gap: 40px !important;
+        padding: 50px 0;
+    }
+
+    .footer-cta-section {
+        text-align: center;
+        justify-content: center;
+    }
+
+    .footer-copyright {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        text-align: center;
+        padding-bottom: 30px;
+    }
+
+    .brand-col,
+    .footer-col {
+        align-items: center !important;
+    }
+
+    .footer-bio {
+        text-align: center !important;
+    }
+
+    .footer-socials {
+        justify-content: center !important;
+    }
+
+    /* --- 8. Loader --- */
+    .loader-logo {
+        font-size: 2.2rem;
+    }
+
+    .loader-logo .material-icons {
+        font-size: 2.5rem !important;
+    }
+
+    .loader-line {
+        max-width: 120px;
+    }
+
+    /* --- NAVBAR MOBILE FIXES --- */
+    .nav-container {
+        padding: 0 15px !important;
+    }
+
+    .nav-right {
+        gap: 10px !important;
+    }
+
+    /* 1. Turn "Create Post" into a circular + icon */
+    .main-nav .btn-posh span:not(.material-icons) {
+        display: none;
+    }
+
+    .main-nav .btn-posh {
+        padding: 0 !important;
+        width: 38px;
+        height: 38px;
+        border-radius: 50% !important;
+        justify-content: center;
+    }
+
+    /* 2. Scale down the hamburger slightly to fit */
+    .hamburger svg {
+        height: 38px;
+        width: 38px;
+    }
+
+    .hamburger {
+        margin-left: 0;
+    }
+
+    /* 3. Scale down the profile avatar slightly */
+    .profile-trigger div {
+        width: 35px !important;
+        height: 35px !important;
+    }
+
+    /* --- HIDE BRAND TEXT ON MOBILE (App-style) --- */
+    .brand {
+        font-size: 0 !important;
+    }
+
+    .brand span:not(.material-icons) {
+        display: none !important;
+    }
+
+    .brand .material-icons {
+        font-size: 32px !important;
+        color: var(--text-main);
+    }
+}
+
+@media (min-width: 901px) {
+    .mobile-toggle {
+        display: none;
+    }
+}
+
+/* =========================================
+   DESKTOP ONLY FIXES (Screens wider than 1024px)
+   ========================================= */
+@media (min-width: 1024px) {
+    .features-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 30px !important;
+        align-items: stretch;
+        /* Make all cards same height */
+    }
+
+    /* Ensure the cards themselves don't force width */
+    .feature-card {
+        width: 100% !important;
+        min-width: 0 !important;
+        /* Critical CSS trick for grids */
+    }
+}
+
+/* =========================================
+   HOME PAGE LAYOUT FIX (Force Horizontal)
+   ========================================= */
+
+/*1.  Force ALL card images to stay inside their boxes cleanly */
+.feature-card img,
+.card img,
+.gallery-item img,
+.post-image {
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
+    border-radius: 12px;
+    display: block;
+    box-sizing: border-box;
+}
+
+/* 2. Force the Post Feed (Masonry/Grid) to be Side-by-Side */
+.masonry-wrapper,
+.post-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    gap: 25px !important;
+    align-items: start;
+    width: 92% !important;
+    max-width: 1440px !important;
+    min-height: 60vh;
+    margin: 100px auto 40px !important;
+}
+
+/* 3. Force the Feature Cards (News, Code, Market) to be Side-by-Side */
+.features-grid,
+.features-container {
+    display: flex !important;
+    flex-direction: row !important;
+    /* Force Horizontal */
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    /* Allows them to stack ONLY on mobile phones */
+}
+
+/* =========================================
+   25. ABOUT PAGE (Dev Cards)
+   ========================================= */
+.dev-card {
+    width: 320px;
+    height: 400px;
+    perspective: 1000px;
+}
+
+.dev-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: var(--card-bg);
+    border-radius: 24px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.dev-front {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    transition: all 0.5s ease;
+}
+
+.dev-img-container {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--primary-glow);
+    margin-bottom: 25px;
+    overflow: hidden;
+    border: 4px solid var(--bg-body);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dev-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.dev-info-basic h3 {
+    color: var(--text-main);
+}
+
+.dev-info-basic p {
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.dev-back {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    padding: 30px 20px;
+    background: var(--primary);
+    color: white;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+}
+
+.dev-card:hover .dev-card-inner {
+    transform: translateY(-10px);
+    border-color: var(--primary);
+    box-shadow: 0 20px 40px rgba(79, 70, 229, 0.2);
+}
+
+.dev-card:hover .dev-back {
+    bottom: 0;
+}
+
+.dev-card:hover .dev-front {
+    transform: translateY(-20px);
+    filter: blur(2px);
+    opacity: 0.5;
+}
+
+.dev-card:hover .dev-img-container img {
+    transform: scale(1.1) rotate(5deg);
+    filter: drop-shadow(0 0 10px var(--primary-glow));
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Add a glowing ring around the avatar on hover */
+.dev-card:hover .dev-img-container {
+    border-color: var(--primary);
+    box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
+}
+
+.dev-socials {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dev-socials a {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    backdrop-filter: blur(5px);
+    transition: 0.3s;
+}
+
+.dev-socials a:hover {
+    background: white;
+    color: var(--primary);
+}
+
+.dev-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* This adds a slow, breathing animation */
+    animation: floatAvatar 3s ease-in-out infinite;
+}
+
+@keyframes floatAvatar {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-5px) scale(1.05);
+    }
+}
+
+/* =========================================
+   26. UPLOAD PAGE (Glass Form)
+   ========================================= */
+.glass-form-container {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    padding: 40px;
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    z-index: 10;
+}
+
+.glass-input {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 15px rgba(129, 140, 248, 0.2);
+}
+
+select.glass-input option {
+    background: #1e293b;
+    color: white;
+}

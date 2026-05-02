@@ -1,0 +1,9 @@
+# Security: Database Credentials
+db.php
+
+# User Uploaded Content
+uploads/
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
