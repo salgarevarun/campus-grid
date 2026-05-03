@@ -2,6 +2,12 @@
 include 'db.php';
 session_start();
 
+// Check if user already has a saved phone number
+$u_id = $_SESSION['user_id'];
+$user_query = mysqli_query($conn, "SELECT phone_number FROM users WHERE id = '$u_id'");
+$user_data = mysqli_fetch_assoc($user_query);
+$needs_phone = empty($user_data['phone_number']);
+
 include 'auth_check.php';
 
 $error = "";
@@ -54,6 +60,12 @@ if (isset($_POST['submit'])) {
                 die("Security Error: Only image files are allowed.");
             }
         }
+    }
+
+    // If they provided a phone number, save it to their profile permanently
+    if (isset($_POST['phone_number']) && !empty($_POST['phone_number'])) {
+        $new_phone = mysqli_real_escape_string($conn, $_POST['phone_number']);
+        mysqli_query($conn, "UPDATE users SET phone_number = '$new_phone' WHERE id = '$u_id'");
     }
 
     $sql = "INSERT INTO posts (user_id, type, title, description, image, code_snippet) 
@@ -156,6 +168,20 @@ if (isset($_POST['submit'])) {
                     <label class="form-label" style="color: #cbd5e1;">Attach Image (Optional)</label>
                     <input type="file" name="image" accept="image/*" class="glass-input file-input">
                 </div>
+
+                <?php if ($needs_phone): ?>
+                    <div class="input-group" style="background: rgba(129, 140, 248, 0.05); border: 1px dashed #818cf8; padding: 20px; border-radius: 12px; margin-top: 10px;">
+                        <label class="form-label" style="color: #818cf8; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-weight: bold;">
+                            <span class="material-icons" style="font-size: 1.2rem;">whatsapp</span> Contact Info Needed
+                        </label>
+
+                        <input type="text" name="phone_number" class="glass-input" placeholder="WhatsApp No. (e.g., 9876543210)" required style="width: 100%;">
+
+                        <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 10px; margin-bottom: 0;">
+                            We'll save this securely so buyers can contact you on future posts.
+                        </p>
+                    </div>
+                <?php endif; ?>
 
                 <button type="submit" name="submit" class="btn-login" style="margin-top: 10px;">Post to Grid</button>
             </form>

@@ -2401,11 +2401,6 @@ body:not(.dark-mode) .hero-bg {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* Form Styling (Reuse your dark theme inputs) */
-
-/* 
-   NETWORK BACKGROUND SETUP
-    */
 
 .auth-container {
     display: flex;
@@ -2415,12 +2410,9 @@ body:not(.dark-mode) .hero-bg {
     padding: 20px;
     padding-top: 80px;
     position: relative;
-    /* Critical for canvas positioning */
     overflow: hidden;
-    /* Keeps the animation inside */
-
-    /* Deep Space Background Color */
-    background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+    /* Replaced hardcoded deep space with your theme background */
+    background: var(--bg-body); 
 }
 
 /* The Canvas Element (The Animation Layer) */
@@ -2438,6 +2430,21 @@ body:not(.dark-mode) .hero-bg {
 
 /* Ensure the Glass Form sits ON TOP */
 .glass-container {
+    /* Uses theme card background with slight transparency */
+    background: var(--nav-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    /* Theme borders */
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+
+    position: relative;
+    overflow: hidden;
+    width: 900px;
+    max-width: 100%;
+    min-height: 600px;
     z-index: 10;
 }
 
@@ -2456,9 +2463,8 @@ body:not(.dark-mode) .hero-bg {
 
 .auth-form .inputForm {
     width: 100%;
-    /* Lighter, more see-through background for inputs */
-    background: rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--search-bg);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     height: 50px;
     display: flex;
@@ -2470,7 +2476,7 @@ body:not(.dark-mode) .hero-bg {
 .auth-form .input {
     background: transparent;
     border: none;
-    color: white;
+    color: var(--text-main);
     width: 100%;
     height: 100%;
     outline: none;
@@ -2480,7 +2486,7 @@ body:not(.dark-mode) .hero-bg {
 .toggle-icon {
     position: absolute;
     right: 15px;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-muted);
     cursor: pointer;
     font-size: 20px;
     transition: color 0.3s;
@@ -2521,6 +2527,11 @@ body:not(.dark-mode) .hero-bg {
     height: 100%;
     z-index: 0;
     /* Behind the text */
+    
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+
 }
 
 /* Ensure text sits on top */
@@ -3548,12 +3559,12 @@ body:not(.dark-mode) .hero-bg {
    26. UPLOAD PAGE (Glass Form)
    ========================================= */
 .glass-form-container {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.6); /* Clean white glass */
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.8);
     border-radius: 24px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 30px rgba(71, 45, 45, 0.08); /* Soft rosy shadow */
     padding: 40px;
     width: 100%;
     max-width: 600px;
@@ -3562,19 +3573,38 @@ body:not(.dark-mode) .hero-bg {
 }
 
 .glass-input {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
     transition: all 0.3s ease;
 }
 
 .glass-input:focus {
-    background: rgba(255, 255, 255, 0.1) !important;
+    background: #FFFFFF !important;
     border-color: var(--primary) !important;
-    box-shadow: 0 0 15px rgba(129, 140, 248, 0.2);
+    box-shadow: 0 0 15px var(--primary-glow);
 }
 
 select.glass-input option {
-    background: #1e293b;
-    color: white;
+    background: var(--card-bg);
+    color: var(--text-main);
+}
+
+/* --- DARK MODE OVERRIDES --- */
+body.dark-mode .glass-form-container {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .glass-input {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+}
+
+body.dark-mode .glass-input:focus {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 15px rgba(129, 140, 248, 0.2);
 }

@@ -49,6 +49,7 @@ function renderCard($row, $logged_in_user)
         data-desc="' . htmlspecialchars($row['description']) . '"
         data-user="' . htmlspecialchars($row['username']) . '"
         data-email="' . htmlspecialchars($row['email']) . '"
+        data-phone="' . htmlspecialchars($row['phone_number'] ?? '') . '"
         data-type="' . strtoupper($row['type']) . '"
         data-img="' . $imgUrl . '"
         data-is-code="' . ($isCode ? 'yes' : 'no') . '"
@@ -196,7 +197,7 @@ function renderCard($row, $logged_in_user)
 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
                     <?php
-                    $showcase_sql = "SELECT posts.*, users.username, users.email FROM posts JOIN users ON posts.user_id = users.id ORDER BY created_at DESC LIMIT 3";
+                    $showcase_sql = "SELECT posts.*, users.username, users.email, users.phone_number FROM posts JOIN users ON posts.user_id = users.id ORDER BY created_at DESC LIMIT 3";
                     $showcase_res = mysqli_query($conn, $showcase_sql);
                     $my_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
 
@@ -239,7 +240,7 @@ function renderCard($row, $logged_in_user)
               </div>';
 
         // 1. Start the base query and use WHERE 1=1 so we can easily append AND clauses
-        $sql = "SELECT posts.*, users.username, users.email 
+        $sql = "SELECT posts.*, users.username, users.email, users.phone_number 
         FROM posts 
         JOIN users ON posts.user_id = users.id 
         WHERE 1=1";
@@ -264,7 +265,7 @@ function renderCard($row, $logged_in_user)
 
         // 4. Finally, append the ORDER BY and LIMIT at the very end using .=
         $sql .= " ORDER BY posts.created_at DESC LIMIT 24";
-        
+
         $res = mysqli_query($conn, $sql);
 
         ?>
@@ -316,6 +317,22 @@ function renderCard($row, $logged_in_user)
                 container.innerHTML = `<img src="${img}" style="width: 100%; height: 100%; object-fit: contain;">`;
             } else {
                 container.innerHTML = `<div style="color:white; opacity:0.5; text-align:center;"><p>Text Only</p></div>`;
+            }
+
+            // Setup WhatsApp Contact Button
+            const phone = card.getAttribute('data-phone');
+            const contactBtn = document.getElementById('modalContactBtn');
+            const postTitle = card.getAttribute('data-title');
+
+            if (phone) {
+                contactBtn.style.display = 'inline-block';
+                contactBtn.href = `https://wa.me/91${phone}?text=Hi, I saw your post '${encodeURIComponent(postTitle)}' on Campus Grid!`;
+                contactBtn.innerHTML = '<span class="material-icons" style="vertical-align: middle; font-size: 18px;">chat</span> WhatsApp';
+                contactBtn.style.background = "#25D366"; // WhatsApp Green
+                contactBtn.style.color = "white";
+                contactBtn.style.border = "none";
+            } else {
+                contactBtn.style.display = 'none'; // Hide button if they haven't added a number
             }
 
             // 2. Show & Animate

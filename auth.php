@@ -98,8 +98,8 @@ if (isset($_POST['login'])) {
 
             <div class="form-container sign-up-container">
                 <form action="auth.php" method="POST" class="auth-form">
-                    <h2 style="color:white; margin-bottom:5px;">Create Account</h2>
-                    <p style="color:#888; font-size:0.9rem;">Join the community</p>
+                    <h2 style="color:var(--text-main); margin-bottom:5px;">Create Account</h2>
+                    <p style="color:var(--text-muted); font-size:0.9rem;">Join the community</p>
 
                     <?php if ($error && $active_panel): ?>
                         <div class="error-msg" style="width:100%; margin: 5px 0;"><?= $error ?></div>
@@ -137,8 +137,8 @@ if (isset($_POST['login'])) {
 
             <div class="form-container sign-in-container">
                 <form action="auth.php" method="POST" class="auth-form">
-                    <h2 style="color:white; margin-bottom:5px;">Welcome Back</h2>
-                    <p style="color:#888; font-size:0.9rem;">Sign in to access the grid</p>
+                    <h2 style="color:var(--text-main); margin-bottom:5px;">Welcome Back</h2>
+                    <p style="color:var(--text-muted); font-size:0.9rem;">Sign in to access the grid</p>
 
                     <?php if ($success): ?>
                         <div style="color:#4ade80; margin: 10px 0; font-weight:bold;"><?= $success ?></div>
@@ -158,7 +158,7 @@ if (isset($_POST['login'])) {
                         <span class="material-icons toggle-icon" onclick="togglePass('loginPass', this)">visibility_off</span>
                     </div>
 
-                    <a href="#" style="color:var(--primary); font-size:0.9rem; font-weight:600;">Forgot password?</a>
+                    <a href="forgot_password.php" style="color:var(--primary); font-size:0.9rem; font-weight:600;">Forgot password?</a>
 
                     <button type="submit" name="login" class="button-submit">Sign In</button>
 
