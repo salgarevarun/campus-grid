@@ -1,4 +1,17 @@
 <?php
+
+$nav_avatar = "";
+if (isset($_SESSION['user_id']) && isset($conn)) {
+    $nav_user_id = $_SESSION['user_id'];
+    $nav_sql = "SELECT username, avatar FROM users WHERE id = '$nav_user_id'";
+    $nav_result = mysqli_query($conn, $nav_sql);
+    if ($nav_result && mysqli_num_rows($nav_result) > 0) {
+        $nav_data = mysqli_fetch_assoc($nav_result);
+        // If they have an avatar, use it. Otherwise, generate the letter avatar.
+        $nav_avatar = $nav_data['avatar'] ? "uploads/avatars/" . $nav_data['avatar'] : "https://ui-avatars.com/api/?name=" . urlencode($nav_data['username']) . "&background=random&color=fff";
+    }
+}
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -83,9 +96,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
                     <div class="user-dropdown">
                         <div class="profile-trigger" style="cursor: pointer;">
-                            <div style="width:38px; height:38px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; border: 2px solid var(--bg-body); box-shadow: 0 0 0 2px var(--border-color); font-size: 1rem;">
-                                <?= substr(strtoupper($_SESSION['username']), 0, 1) ?>
-                            </div>
+                            <img src="<?= $nav_avatar ?>" alt="Profile" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); box-shadow: 0 0 10px var(--primary-glow);">
                         </div>
 
                         <div class="dropdown-content" style="min-width: 220px;">
@@ -96,12 +107,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
                             <?php if ($is_admin): ?>
                                 <a href="admin_dashboard.php" style="color: var(--primary); font-weight: bold;">
-                                    <span class="material-icons">dashboard_customize</span> Admin Panel
+                                    <span class="material-icons">admin_panel_settings</span> Command Center
                                 </a>
                                 <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 5px 0;">
                             <?php endif; ?>
 
-                            <a href="user_settings.php"><span class="material-icons">settings</span> Settings</a>
+
                             <a href="logout.php" style="color: #ef4444;"><span class="material-icons" style="color: #ef4444;">logout</span> Logout</a>
                         </div>
                     </div>

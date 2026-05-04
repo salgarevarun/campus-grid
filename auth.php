@@ -57,18 +57,31 @@ if (isset($_POST['login'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $pass = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT id, username, password, role FROM users WHERE email = ?");
+    // We now fetch the banned_until column as well
+    $stmt = $conn->prepare("SELECT id, username, password, role, banned_until FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($user = $result->fetch_assoc()) {
         if (password_verify($pass, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['role'] = $user['role'];
-            header("Location: index.php?welcome=1");
-            exit();
+
+            // 🛡️ THE SECURITY CHECK: Is this user currently banned?
+            if ($user['banned_until'] && strtotime($user['banned_until']) > time()) {
+                // Add the username right into the error message!
+                $error = "Access Denied: @" . $user['username'] . " is suspended until " . date("M d, H:i", strtotime($user['banned_until']));
+            } else {
+                // 📡 THE IP TRACKER: Log their current IP Address
+                $ip = $_SERVER['REMOTE_ADDR'];
+                mysqli_query($conn, "UPDATE users SET last_ip = '$ip' WHERE id = " . $user['id']);
+
+                // Proceed with normal login
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['role'] = $user['role'];
+                header("Location: index.php?welcome=1");
+                exit();
+            }
         } else {
             $error = "Invalid Password!";
         }
@@ -94,7 +107,7 @@ if (isset($_POST['login'])) {
     <div class="auth-container">
         <canvas id="network-canvas"></canvas>
 
-        <div class="glass-container <?php echo $active_panel; ?>" id="container">
+        <div class="glass-container" id="container">
 
             <div class="form-container sign-up-container">
                 <form action="auth.php" method="POST" class="auth-form">
@@ -102,7 +115,10 @@ if (isset($_POST['login'])) {
                     <p style="color:var(--text-muted); font-size:0.9rem;">Join the community</p>
 
                     <?php if ($error && $active_panel): ?>
-                        <div class="error-msg" style="width:100%; margin: 5px 0;"><?= $error ?></div>
+                        <div style="background: rgba(239, 68, 68, 0.15); color: #ef4444; padding: 12px 15px; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.3); margin-bottom: 20px; font-size: 0.9rem; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center; line-height: 1.4;">
+                            <span class="material-icons" style="font-size: 20px;">gavel</span>
+                            <?= $error ?>
+                        </div>
                     <?php endif; ?>
 
                     <div class="inputForm">
@@ -144,7 +160,10 @@ if (isset($_POST['login'])) {
                         <div style="color:#4ade80; margin: 10px 0; font-weight:bold;"><?= $success ?></div>
                     <?php endif; ?>
                     <?php if ($error && !$active_panel): ?>
-                        <div class="error-msg" style="width:100%; margin: 5px 0;"><?= $error ?></div>
+                        <div style="background: rgba(239, 68, 68, 0.15); color: #ef4444; padding: 12px 15px; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.3); margin-bottom: 20px; font-size: 0.9rem; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center; line-height: 1.4;">
+                            <span class="material-icons" style="font-size: 20px;">gavel</span>
+                            <?= $error ?>
+                        </div>
                     <?php endif; ?>
 
                     <div class="inputForm">
@@ -195,6 +214,14 @@ if (isset($_POST['login'])) {
         const signUpButton = document.getElementById('signUp');
         const signInButton = document.getElementById('signIn');
         const container = document.getElementById('container');
+        const shouldSlideToSignUp = <?php echo ($active_panel === 'right-panel-active') ? 'true' : 'false'; ?>;
+
+        // If true, wait a tiny fraction of a second, then trigger the animation!
+        if (shouldSlideToSignUp) {
+            setTimeout(() => {
+                container.classList.add("right-panel-active");
+            }, 50);
+        }
 
         signUpButton.addEventListener('click', () => {
             container.classList.add("right-panel-active");

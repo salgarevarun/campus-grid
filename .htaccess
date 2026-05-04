@@ -1,0 +1,14 @@
+# Turn on the custom error engine (Localhost Version)
+ErrorDocument 400 /campus_grid/error.php?code=400
+ErrorDocument 401 /campus_grid/error.php?code=401
+ErrorDocument 403 /campus_grid/error.php?code=403
+ErrorDocument 404 /campus_grid/error.php?code=404
+ErrorDocument 500 /campus_grid/error.php?code=500
+
+# Prevent visitors from viewing your file directory lists
+Options -Indexes
+
+# Block direct access to database credentials
+<Files "db.php">
+    Require all denied
+</Files>
